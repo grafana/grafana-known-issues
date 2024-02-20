@@ -1,5 +1,5 @@
-# Grafana Bug Report - Open
-## Date: 2024-01-16
+# Grafana Bug Report
+## Date: 2024-02-20
 ## 10.0.0
 - [Alerting: Alert rules whose folder does not exist are effectively invisible in the ruler API](https://github.com/grafana/grafana/issues/69510)
 - [Alerting: Values variables not displaying information properly](https://github.com/grafana/grafana/issues/72778)
@@ -38,6 +38,7 @@
 - [Dashboards: Repeating library panels duplicate unexpectedly when saved inside a closed row](https://github.com/grafana/grafana/issues/78563)
 - [Panel: Zero year timepicker causes timeseries plugin to crash](https://github.com/grafana/grafana/issues/76292)
 ## 10.1.5
+- [Api: Lookup by nameOrEmail does not return correct isDissabled value](https://github.com/grafana/grafana/issues/79785)
 - [Explore: URLs with data source names lose PromQL](https://github.com/grafana/grafana/issues/76752)
 ## 10.2.0
 - [Alerting: Alert detail page returns "not found" when alert rule is reconciling](https://github.com/grafana/grafana/issues/74044)
@@ -46,19 +47,24 @@
 - [Correlations: Incorrect step label](https://github.com/grafana/grafana/issues/78106)
 - [Explore: Long span/resource name labels in TraceQL search are not handled properly in UI](https://github.com/grafana/grafana/issues/72431)
 - [Grafana board says "day" instead of "days" when value > 1](https://github.com/grafana/grafana/issues/77592)
-- [Issue Adding Users to an Organization as Grafana Admin in Grafana OSS 10.2.0](https://github.com/grafana/grafana/issues/79062)
+- [Invalid Service Graph Filters?](https://github.com/grafana/grafana/issues/80822)
 - [Stats chart disappeared due to size of stat panel](https://github.com/grafana/grafana/issues/77124)
 - [Tempo: Variable interpolation doesn't work with numbers](https://github.com/grafana/grafana/issues/73233)
 - [When I use Stat charts and set the value of min to exceed max through the inputNumber step method, it will trigger a page crash](https://github.com/grafana/grafana/issues/73907)
+- [panel: candlestick does not honour connect null values never](https://github.com/grafana/grafana/issues/78169)
 ## 10.2.1
 - [DateTimePicker: wrong element width](https://github.com/grafana/grafana/issues/78466)
 - [User UI misaligned table cells and tooltip icons](https://github.com/grafana/grafana/issues/78175)
 ## 10.2.2
 - [Access Control: Should take access control into consideration for populating plugins/apps in frontendsettings/bootdata](https://github.com/grafana/grafana/issues/79153)
+- [CloudWatch: No static label for alarm metric](https://github.com/grafana/grafana/issues/79833)
 - [Dashboards: Datasource is allowed to be selected as variable query even though it doesn't support variables](https://github.com/grafana/grafana/issues/79218)
 - [Explore / Logs: scroll to top breaking top button area position](https://github.com/grafana/grafana/issues/79196)
 - [Organisations: new organisations can not be viewed/edited/deleted by admin user](https://github.com/grafana/grafana/issues/79311)
+- [Panels: Description is not full when panel is too close to right side of screen](https://github.com/grafana/grafana/issues/79776)
 - [Time series: y-axis labels includes noValue string when decimals = 0](https://github.com/grafana/grafana/issues/79100)
+- [Variable is displayed inconsistently in the title and content of a Text panel](https://github.com/grafana/grafana/issues/80523)
+- [grafana alerting Groups: not possible to search by label.](https://github.com/grafana/grafana/issues/79987)
 ## 10.2.3
 - [Add support linking existing panels to non-Grafana managed alert rules.](https://github.com/grafana/grafana/issues/74338)
 - [Alerting: Alert rules whose folder does not exist are effectively invisible in the Provisioning group API](https://github.com/grafana/grafana/issues/69512)
@@ -87,13 +93,21 @@
 - [Bug: When deleting last item of a specific page in public dashboard list, then empty list is returned](https://github.com/grafana/grafana/issues/70531)
 - [Canvas: Arrows disappear of other panels when exit edit mode in canvas](https://github.com/grafana/grafana/issues/69350)
 - [Canvas: Connections do not follow display order](https://github.com/grafana/grafana/issues/61441)
+- [Dashboard Variables: Metrics regex filter for Label Names query of Prometheus data source doesn't work](https://github.com/grafana/grafana/issues/80264)
 - [Dashboards: Query inspector escapes the panel name](https://github.com/grafana/grafana/issues/80630)
-- [Grafana 10.2.3 is breaking dashboard (No data)](https://github.com/grafana/grafana/issues/79692)
 ## 10.3.0
 - [Alerting: Insights page showing the wrong datasource](https://github.com/grafana/grafana/issues/78900)
 - [Bug: Dashboard Imports - Variable datasources are lost on import when using "Export for sharing externally"](https://github.com/grafana/grafana/issues/77961)
 - [Dashboards: No "Unsaved changes" dialog when clicking on explore from a new dashboard](https://github.com/grafana/grafana/issues/80415)
 - [Tracing explore: exporting trace JSON is missing resource attributes](https://github.com/grafana/grafana/issues/77201)
+## 10.3.1
+- [Panels: Disconnect Value Threshold does not interact well with automatic data point interval calculation](https://github.com/grafana/grafana/issues/83031)
+- [Viz: The loading bar causes text to shift (become blurry)](https://github.com/grafana/grafana/issues/82214)
+- [units of time smaller than the one chosen are not used on axis](https://github.com/grafana/grafana/issues/81567)
+## 10.4.0
+- [Disabled transforms are breaking reports](https://github.com/grafana/grafana/issues/80947)
+- [Prometheus: Timeseries step changes in different views](https://github.com/grafana/grafana/issues/82276)
+- [bug: recently used absolute range is cut off](https://github.com/grafana/grafana/issues/82037)
 ## 7.3.4
 - [Templating: Outdated options loaded from URL](https://github.com/grafana/grafana/issues/57560)
 ## 7.5.12
@@ -102,37 +116,25 @@
 - [Prometheus: Datasource variable causes stale label-browser-data.](https://github.com/grafana/grafana/issues/52432)
 ## 8.1.5
 - [$__interval rounded to integer number of seconds in MySQL queries](https://github.com/grafana/grafana/issues/55273)
-## 8.2.5
-- [When one of multiple queries/expressions fails in the unified alerting definition window none of them return a result](https://github.com/grafana/grafana/issues/42588)
-## 8.3.0
-- [Contact Points and Notification Policies disappeared](https://github.com/grafana/grafana/issues/43347)
-## 8.3.1
-- [Time series: Stack bar single tooltip showing zero values](https://github.com/grafana/grafana/issues/42994)
 ## 8.3.2
-- [Grafana server crashes with concurrent map writes ](https://github.com/grafana/grafana/issues/44509)
 - [`$__timeGroup` with fill parameter panics with "integer divide by zero" for interval below 1s](https://github.com/grafana/grafana/issues/43579)
 ## 8.3.3
 - [Cannot hide series when they have the same name](https://github.com/grafana/grafana/issues/43909)
 - [No user feedback if a message/contact point template fails to evaluate](https://github.com/grafana/grafana/issues/43733)
-- [Undesired zoom while annotating](https://github.com/grafana/grafana/issues/44417)
 ## 8.3.4
 - [MixedDatasource, one non-defined datasource disables showing available data from others](https://github.com/grafana/grafana/issues/46299)
 - [range annotations no longer works](https://github.com/grafana/grafana/issues/49515)
 - [utcOffsetSec is not consistently calculated when invoking /api/ds/query](https://github.com/grafana/grafana/issues/46806)
 ## 8.3.5
 - [Repeat panels in collapsed rows cannot be linked directly to](https://github.com/grafana/grafana/issues/47964)
-- [Tracing / duplicate spanId not handled correctly](https://github.com/grafana/grafana/issues/45462)
 ## 8.3.6
 - [Not able to silence alerts in folder with editor permission](https://github.com/grafana/grafana/issues/45370)
 - [Shared crosshair not working](https://github.com/grafana/grafana/issues/46581)
-- [Timeseries: Annotations from multiple datasources do not show the full annotation](https://github.com/grafana/grafana/issues/46440)
 ## 8.4.0
-- [Using a range query with 'Query type: both' only shows an error](https://github.com/grafana/grafana/issues/42776)
 - [tooltip display is flakey](https://github.com/grafana/grafana/issues/45433)
 ## 8.4.2
 - [Creating external snapshots fail when too much data OR data is lost ](https://github.com/grafana/grafana/issues/50896)
 ## 8.4.3
-- [Content-Security-Policy is set twice in the Data source proxy calls](https://github.com/grafana/grafana/issues/46456)
 - [Expressions: Cannot interpolate template variables](https://github.com/grafana/grafana/issues/48141)
 - [Library panels not working with provisioned dashboards, fail with: Panel plugin not found: Name: "...", UID: "..."](https://github.com/grafana/grafana/issues/46247)
 ## 8.4.4
@@ -155,8 +157,6 @@
 - [Tooltip on time series panel with unit "duration (s)" doesn't show values below millisecond precision](https://github.com/grafana/grafana/issues/52538)
 ## 9.0.3
 - [Explore: Loading query field takes too long and allows typing in it before it has loaded](https://github.com/grafana/grafana/issues/52213)
-## 9.0.4
-- [Stat panel does not apply "No Value" mapping](https://github.com/grafana/grafana/issues/52789)
 ## 9.0.5
 - [Variables: Duplicated panel does not keep scopedVars](https://github.com/grafana/grafana/issues/52745)
 ## 9.0.7
@@ -190,7 +190,7 @@
 ## 9.2.1
 - [MSSQL: Query-builder cannot handle hyphens in database names OR alternate schemas](https://github.com/grafana/grafana/issues/58757)
 - [Series Override color picker does not work (Old graph panel)](https://github.com/grafana/grafana/issues/57060)
-- [[Dashboard - Settings ] Can't set a folder for an existing dashboard which was in General](https://github.com/grafana/grafana/issues/59293)
+- [[Dashboard - Settings ] Dashboards: Cannot change folder and save. No changes detected.](https://github.com/grafana/grafana/issues/59293)
 ## 9.2.3
 - [Alerting: broken rendering of alert notifications on Slack Android](https://github.com/grafana/grafana/issues/75145)
 - [Searching for Grafana users shows a JS error when there is no match](https://github.com/grafana/grafana/issues/58324)
@@ -216,7 +216,6 @@
 - [Recording rule for Loki uses different Loki datasource than the configured one.](https://github.com/grafana/grafana/issues/61561)
 - [Routing in v9.3.2 is not triggering a proper Settings page render](https://github.com/grafana/grafana/issues/61815)
 - [Select: the width of the component changes when it's opened, causing a layout shift](https://github.com/grafana/grafana/issues/62884)
-- [Unable to Save Dashboard with `validateDashboardsOnSave` Feature Toggle](https://github.com/grafana/grafana/issues/61418)
 ## 9.3.6
 - ["Config from Query" disables config overrides](https://github.com/grafana/grafana/issues/68277)
 - [Bar stacking breaks when a value gets positve and negative values ](https://github.com/grafana/grafana/issues/65872)
@@ -248,8 +247,10 @@
 ## 9.4.7
 - ["Phantom" variables from JavaScript prototype methods break queries](https://github.com/grafana/grafana/issues/67342)
 - [CentOS + 9.4.7: Upgrade causes issues with systemd process restart](https://github.com/grafana/grafana/issues/67057)
+- [Data Sources with a slash in the UID can be created through the API but cannot be interacted with in the UI](https://github.com/grafana/grafana/issues/83088)
 - [Discord alerts via webhook fail, return HTTP/400](https://github.com/grafana/grafana/issues/65270)
 - [Geomap: Route layer is connecting first and last data points of grouped data](https://github.com/grafana/grafana/issues/72878)
+- [Grafana sends expired id token in X-Id-Token header to datasource when using "Forward OAuth Identity"](https://github.com/grafana/grafana/issues/65380)
 - [How to avoid retriggering firing unified alert again during helm upgrade](https://github.com/grafana/grafana/issues/73801)
 - [Minor Bug - "Data sources have a new home!" message in versions older than Grafana 9.5.0, and broken URL](https://github.com/grafana/grafana/issues/66292)
 - [Plugins: Imported datasource dashboards gets name instead of UID under datasource uid](https://github.com/grafana/grafana/issues/66691)
@@ -258,7 +259,6 @@
 - [alert rule editable permission is not working as expected](https://github.com/grafana/grafana/issues/65767)
 ## 9.4.9
 - [Alerting UI: Existing Label values fails to pre-populate when accessing the alert rule via a panel](https://github.com/grafana/grafana/issues/69172)
-- [Dashboards: Folder defaults to root folder when more than 1000 dashboard folders](https://github.com/grafana/grafana/issues/80377)
 ## 9.5.0
 - ["Filter for value" then "Filter out value" broken on Explore, Table view, Prom DS](https://github.com/grafana/grafana/issues/65894)
 - [AdHoc filters: Editing Adhoc filters removes text value](https://github.com/grafana/grafana/issues/69421)
@@ -281,6 +281,7 @@
 ## 9.5.9
 - [Grafana 9.5.9 / alert rule panic runtime error: index out of range [0] with length 0 - occurs when no data is returned by the query](https://github.com/grafana/grafana/issues/74974)
 ## No Version
+- [Alerting template for telegram is broken after upgrade to 10.0](https://github.com/grafana/grafana/issues/82622)
 - [Alerting: External Alertmanager configurations with ambiguous true/false values can't be modified through Grafana UI](https://github.com/grafana/grafana/issues/77956)
 - [Alerting: File provisioning rule export endpoints should escape $variables](https://github.com/grafana/grafana/issues/71006)
 - [Alerting: Grafana Alerting should validate and reject rule UIDs which are empty](https://github.com/grafana/grafana/issues/69511)
@@ -289,6 +290,7 @@
 - [Alerting: Notification Errors API doesn't work on HA](https://github.com/grafana/grafana/issues/64732)
 - [Alerting: Orphaned rules that don't comply with new restrictions around folders are uneditable](https://github.com/grafana/grafana/issues/69513)
 - [Alerting: Slack Alert title links to `alerting/list` rather than the alert-rule](https://github.com/grafana/grafana/issues/69248)
+- [Alerting: Support asynchronous internal Alertmanager bootstrapping](https://github.com/grafana/grafana/issues/80890)
 - [Cannot assign folder to new alert rule (not always, at least)](https://github.com/grafana/grafana/issues/58313)
 - [Canvas: Inline editor breaks when notification banner is present](https://github.com/grafana/grafana/issues/73445)
 - [Canvas: Instances not being updated](https://github.com/grafana/grafana/issues/65298)
@@ -302,13 +304,14 @@
 - [Cloudwatch: Performance issue with dimension-keys](https://github.com/grafana/grafana/issues/68408)
 - [Cloudwatch: last minute of metrics missing on small time-ranges](https://github.com/grafana/grafana/issues/64568)
 - [Cloudwatch: query syntax highlighting incorrect when using regex](https://github.com/grafana/grafana/issues/68172)
-- [Codeql: Code scanning errors](https://github.com/grafana/grafana/issues/43080)
 - [Config: Empty values in `custom.ini` are replaced with values from `defaults.ini`](https://github.com/grafana/grafana/issues/79461)
 - [ContactPoints: incorrect substitution of enviroment values in yaml config](https://github.com/grafana/grafana/issues/69950)
 - [Core: Back pressure mechanism when DB connections saturated](https://github.com/grafana/grafana/issues/70946)
+- [Correlations: Investigate a flaky integration test](https://github.com/grafana/grafana/issues/82520)
 - [Correlations: Permissions issues around Explore Editor](https://github.com/grafana/grafana/issues/80304)
 - [Correlations: Save prompt appearing with no changes](https://github.com/grafana/grafana/issues/80299)
 - [Dashboard not updating repeated panels after changing options](https://github.com/grafana/grafana/issues/75738)
+- [Dashboard settings: Settings views are accessble if the dasboard is non-editable.](https://github.com/grafana/grafana/issues/80877)
 - [Dashboard: Discarding changes on a just saved panel discards just saved changes](https://github.com/grafana/grafana/issues/67217)
 - [Dashboard: panel context menu doesn't hide](https://github.com/grafana/grafana/issues/71217)
 - [Dashboard: panel's tooltip is not responsive](https://github.com/grafana/grafana/issues/68288)
@@ -318,7 +321,8 @@
 - [Dashboards: Using `Repeat for`, the value of row is not set in the PromQL of the first row panel](https://github.com/grafana/grafana/issues/70729)
 - [Dashboards: expressions break entire panels when one of the queries used does not return data](https://github.com/grafana/grafana/issues/70356)
 - [Data Source Picker: subpath missing when served with subpath on configure a new datasource button](https://github.com/grafana/grafana/issues/71061)
-- [Data source config: CustomHeadersSettings saving does not show headers as configured](https://github.com/grafana/grafana/issues/73966)
+- [Data Trails: Performance Issues on Metrics Select Page](https://github.com/grafana/grafana/issues/81197)
+- [Data Trails: Start node doesn't take you back to the metric select step after a period of time](https://github.com/grafana/grafana/issues/81593)
 - [Datasource Test button reports Mimir/Cortex for vanilla Prometheus](https://github.com/grafana/grafana/issues/66384)
 - [Derived fields: The derived fields are applied too early and too often](https://github.com/grafana/grafana/issues/78449)
 - [Docs - prometheus query editor broken images](https://github.com/grafana/grafana/issues/64714)
@@ -329,11 +333,16 @@
 - [Drag n Drop: can't see uploaded file using new datasource picker because its selecting the wrong datasource](https://github.com/grafana/grafana/issues/67942)
 - [Easticsearch: remove running queries on-change](https://github.com/grafana/grafana/issues/79463)
 - [Elasticsearch: In Explore we add unnecessary `date_histogram` aggregation when requesting logs](https://github.com/grafana/grafana/issues/68734)
+- [Empty state: doesn't show up after removing a panel](https://github.com/grafana/grafana/issues/82925)
 - [Exceptions in panel migration handlers are silently ignored](https://github.com/grafana/grafana/issues/73918)
-- [Explore button leads to "Unexpected error" for  plugins that are using GrafanaTheme and Grafana 8.2+](https://github.com/grafana/grafana/issues/42361)
+- [Exiting edit mode after save restores initial dashboard state](https://github.com/grafana/grafana/issues/82137)
 - [Explore: Graph should not process frames while data is loading](https://github.com/grafana/grafana/issues/79945)
+- [Explore: Logs cursor not synced in Split View](https://github.com/grafana/grafana/issues/81697)
 - [Explore: Prom, Split screen, Add to Dashboard => single query renders as two results](https://github.com/grafana/grafana/issues/60061)
+- [Explore: Restore cursor sync in Explore's graph](https://github.com/grafana/grafana/issues/81699)
 - [Filter fields with null values in exported dashboard model](https://github.com/grafana/grafana/issues/54126)
+- [Filter-by-values: Exclude-null doesn't get initialised properly](https://github.com/grafana/grafana/issues/81465)
+- [FilterByValue: Include by Regex doesn't work on null values](https://github.com/grafana/grafana/issues/81475)
 - [Flakey Backend Plugins Integration Test](https://github.com/grafana/grafana/issues/78836)
 - [Flaky test: TestIntegrationGraphite in pkg/tests/api/graphite](https://github.com/grafana/grafana/issues/60107)
 - [Flaky test: Test_subscribeToFolderChanges in pkg/services/ngalert](https://github.com/grafana/grafana/issues/60320)
@@ -359,12 +368,12 @@
 - [Grafana thinks I'm navigating away when I'm not - shows "Do you want to save your changes?"](https://github.com/grafana/grafana/issues/74695)
 - [Grafana/UI: IconButton does not seem to have correct intrinsic sizing](https://github.com/grafana/grafana/issues/70346)
 - [Grafana/UI: IconButton has right margin](https://github.com/grafana/grafana/issues/70348)
-- [GrafanaUI: Allow checkbox to support tooltips](https://github.com/grafana/grafana/issues/64760)
 - [HTML escaping error on telegram notifications](https://github.com/grafana/grafana/issues/73210)
 - [Having `Viz hidden` override on Series does not allow to display it in graph when clicking on it in Legend](https://github.com/grafana/grafana/issues/46273)
 - [I can create annotations on play.grafana.org as anonymous viewer](https://github.com/grafana/grafana/issues/75319)
 - [Incorrect links in contributor guidelines](https://github.com/grafana/grafana/issues/65213)
 - [InfluxDB: Incorrect Handling of the `<>` Operator](https://github.com/grafana/grafana/issues/77793)
+- [InfluxDB: Wrong query generated when using templateVariable with equal operator on influxql visual query builder](https://github.com/grafana/grafana/issues/81517)
 - [Inspector: No data text is ill-padded in data view](https://github.com/grafana/grafana/issues/69532)
 - [Invited LDAP users are asked to create password](https://github.com/grafana/grafana/issues/65741)
 - [Label values metric selector slow UX](https://github.com/grafana/grafana/issues/75804)
@@ -373,23 +382,19 @@
 - [Library panel created from deprecated panels are disabled, can't be added to a new dashboard](https://github.com/grafana/grafana/issues/59698)
 - [Loki Autocomplete: White spaces tricks the autocomplete system.](https://github.com/grafana/grafana/issues/74561)
 - [Loki Query Builder: No warning about losing parts of the query with a constant query](https://github.com/grafana/grafana/issues/72334)
-- [Loki: Lezer LogQL breaks with labels matching LogQL keywords](https://github.com/grafana/grafana/issues/69374)
 - [Loki: Metric kick start your query should be applied on top of your log query](https://github.com/grafana/grafana/issues/76207)
 - [Long Alert repeat interval(multiple weeks) realerts ever 5 days](https://github.com/grafana/grafana/issues/72308)
 - [Make field names lower case in the alerting provisioning docs](https://github.com/grafana/grafana/issues/50823)
 - [Make sure requests are not instrumented as the `unknown` handler](https://github.com/grafana/grafana/issues/55237)
 - [MatchersUI: field type is overwritten](https://github.com/grafana/grafana/issues/72480)
-- [Missing parameters on VariableModel schema](https://github.com/grafana/grafana/issues/67639)
 - [Multiple Annotations per rule when running Unified Alerting in High Availability (HA) mode.](https://github.com/grafana/grafana/issues/48294)
 - [Multiple CSV/Spreadsheet files in the same panel does not work.](https://github.com/grafana/grafana/issues/67209)
 - [MySQL-only flakiness TestIntegrationXORMGetDashboardVersion in pkg/services/dashboardversion](https://github.com/grafana/grafana/issues/60427)
 - [NestedFolders: API reports sharedwithme psuedo-folder has parent of sharedwithme](https://github.com/grafana/grafana/issues/80131)
 - [NestedFolders: Handle no permission to view folder](https://github.com/grafana/grafana/issues/71274)
-- [Onboarding panel clips poorly on narrow screens](https://github.com/grafana/grafana/issues/78451)
 - [Panel edit: Cannot find "Logarithmic" via options search](https://github.com/grafana/grafana/issues/59719)
 - [PanelEdit: Default data source query editor is shown when data source is missing](https://github.com/grafana/grafana/issues/60093)
 - [Permissions: grafanaBootData.user.permissions lists folders:write for Viewer with edit on one folder](https://github.com/grafana/grafana/issues/74848)
-- [Plugin Catalog: "Enable" button not visible after install an app plugin](https://github.com/grafana/grafana/issues/78003)
 - [Plugins CDN: Certain plugins fail to load with appSubUrl](https://github.com/grafana/grafana/issues/71635)
 - [Preferences: Default timezone offset shows user preference](https://github.com/grafana/grafana/issues/68877)
 - [Problem with deduplication of alerts between Grafana Internal alertmanager](https://github.com/grafana/grafana/issues/55938)
@@ -397,14 +402,15 @@
 - [Prometheus: Filtering out a field is not working](https://github.com/grafana/grafana/issues/62881)
 - [Prometheus: Query builder arguments not rendering in correct position](https://github.com/grafana/grafana/issues/70401)
 - [Prometheus: White spaces tricks the autocomplete system.](https://github.com/grafana/grafana/issues/74560)
-- [Prometheus: bug selecting option legend custom name](https://github.com/grafana/grafana/issues/70030)
 - [Prometheus: stacked resource requests don't cancel ongoing request like queries do](https://github.com/grafana/grafana/issues/64548)
 - [Public Dashboards: Library Panels not Working](https://github.com/grafana/grafana/issues/54802)
 - [Public dashboards: warning alert appears when rendering](https://github.com/grafana/grafana/issues/78460)
+- [Query History: Incorrect time filtering](https://github.com/grafana/grafana/issues/81044)
 - [Query builder: cloudwatch query builder does not generate code](https://github.com/grafana/grafana/issues/67789)
+- [Query variables do not resolve when changing time range](https://github.com/grafana/grafana/issues/82507)
+- [QueryVariableEditor: When we have nested variables, the Preview Values show the query string, but not the result](https://github.com/grafana/grafana/issues/81632)
 - [Quoted values sent form data links as traceQL query doesn't work as expected](https://github.com/grafana/grafana/issues/77937)
 - [RBAC: Dashboard/folder permissions disappearing if the uid is updated](https://github.com/grafana/grafana/issues/60983)
-- [Remove isEqual mock in fieldState unit test](https://github.com/grafana/grafana/issues/80039)
 - [Remove/Reset scheduler metrics for an org if it does not have any alert rules](https://github.com/grafana/grafana/issues/63607)
 - [Rename Duration / Start time labels to prevent collision between traces and spans](https://github.com/grafana/grafana/issues/63740)
 - [Report catch errors in the UI](https://github.com/grafana/grafana/issues/70327)
@@ -414,40 +420,41 @@
 - [Search: navigation bar search very slow for non-admins](https://github.com/grafana/grafana/issues/69659)
 - [Search: query.sort now insists on "name_sort" instead of null when nothing is selected](https://github.com/grafana/grafana/issues/60335)
 - [SearchV2: Work properly with dashboard provisioning](https://github.com/grafana/grafana/issues/50422)
+- [Searching panel options throws a runtime error](https://github.com/grafana/grafana/issues/81883)
 - [Security: Document CSRF options in defaults.ini](https://github.com/grafana/grafana/issues/67923)
 - [Select component doesn't update state when receiving a new value from outside the component](https://github.com/grafana/grafana/issues/69732)
 - [Snapshots: Store ID for external snapshots](https://github.com/grafana/grafana/issues/51923)
 - [Soft Max makes values on bar not visible](https://github.com/grafana/grafana/issues/69849)
-- [Some custom email templates stopped working after migration to Grafana Alerting](https://github.com/grafana/grafana/issues/42946)
-- [Some dashboards are not editable when enabling dashboardSceneForViewers](https://github.com/grafana/grafana/issues/80454)
 - [Some data sources returning error when used with Expressions](https://github.com/grafana/grafana/issues/50552)
 - [Split alert_configuration table in half](https://github.com/grafana/grafana/issues/60053)
 - [Stat panel Graph mode error](https://github.com/grafana/grafana/issues/69138)
+- [Stat: Percent change layout glitch](https://github.com/grafana/grafana/issues/80850)
 - [Story: Fix public dashboard data discrepancy](https://github.com/grafana/grafana/issues/74040)
-- [Table: Adding field calcs when data is undefined crashes the panel](https://github.com/grafana/grafana/issues/80478)
+- [Task: Public dashboard settings opening form the list is not showing the tab in the modal](https://github.com/grafana/grafana/issues/82257)
 - [Task: when admin adds Admin or Edit permission to a user for a dashboard, public dashboard permission is not added/set](https://github.com/grafana/grafana/issues/62379)
 - [Template Variables: long values on ad hoc filters interfering with UI](https://github.com/grafana/grafana/issues/69285)
 - [Template Variables: multi-value variable not being properly formatted when used as query param](https://github.com/grafana/grafana/issues/69051)
 - [Tempo - TraceQL field auto-collapses height](https://github.com/grafana/grafana/issues/65628)
 - [Tempo Search editor doesn't return results when searching for multiple non-string attribute values](https://github.com/grafana/grafana/issues/67082)
+- [Tempo Service Graph bad_data error when span has regex in name](https://github.com/grafana/grafana/issues/79791)
 - [Tempo explore repeatedly executes streaming queries every 10 minutes](https://github.com/grafana/grafana/issues/79024)
 - [Tempo fails to report error parsing trace](https://github.com/grafana/grafana/issues/49265)
+- [Tempo: Streaming does not work when visiting a direct link](https://github.com/grafana/grafana/issues/82206)
 - [TimeSeries: timeSeriesLong frames don't toggle properly via legend](https://github.com/grafana/grafana/issues/63987)
 - [Tooltip: Issue with double click](https://github.com/grafana/grafana/issues/79485)
 - [Tooltip: The axis value doesn't work correctly in tooltip ](https://github.com/grafana/grafana/issues/69409)
 - [TraceQL Autocomplete exits when typing . if there is no closing }](https://github.com/grafana/grafana/issues/77319)
 - [Transformation: Prevent overriding field conversion in convert field type transform](https://github.com/grafana/grafana/issues/77898)
-- [Transformations: Disabling transformation is causing "No Data" to appear despite data existing](https://github.com/grafana/grafana/issues/80503)
+- [Transformations: Organize fields by name field options can become stale](https://github.com/grafana/grafana/issues/82341)
 - [Users can access to the edit alert page directly using a provisioned UID in the edit url.](https://github.com/grafana/grafana/issues/76013)
 - [Variables: Multi-select DataSource variables are inconsistently displayed in the Data source picker](https://github.com/grafana/grafana/issues/74849)
 - [ViewPanel showing blank graph in the panel without any data](https://github.com/grafana/grafana/issues/70241)
-- [XYChart: Table mode crashes when changing data frames](https://github.com/grafana/grafana/issues/80648)
+- [When modifying a variable (prometheus variable in my case) and navigating back to the variables list, the variable definition is not updated](https://github.com/grafana/grafana/issues/81631)
+- [XY Chart: Improve handling of null values](https://github.com/grafana/grafana/issues/82209)
 - [[ templating ] [ Query type ] text : value pairs dismissed with duplicate value](https://github.com/grafana/grafana/issues/55154)
-- [[TraceQL] Streaming results repeatedly collapse](https://github.com/grafana/grafana/issues/74140)
 - [`${__to:date:Z}` variable date formatters does not return UTC](https://github.com/grafana/grafana/issues/51733)
 - [`--Dashboard--` DS not available within `--Mixed` DS](https://github.com/grafana/grafana/issues/63866)
 - [`/api/alertmanager/grafana/api/v2/status` should return the right cluster status](https://github.com/grafana/grafana/issues/48581)
-- [`NestedFolderPicker` search isn't debounced](https://github.com/grafana/grafana/issues/80462)
 - [`options` and `current` parameters are not calculated on Dashboard import ](https://github.com/grafana/grafana/issues/67641)
 - [geomap visualization ignores geohash-field-name setting](https://github.com/grafana/grafana/issues/49000)
 - [metrics browser: Label values counter showing incorrect counts after selecting a label](https://github.com/grafana/grafana/issues/59705)
@@ -459,8 +466,8 @@
 - [unified alerting: "Failed to evaluate queries and expressions: failed to execute conditions: input data must be a wide series but got type long (input refid)" for NODATA condition](https://github.com/grafana/grafana/issues/48014)
 ## Stats
 - Total Bugs Scanned: 2100
-- Total Open Bugs: 452
-- Total Closed Bugs: 1648
-- Total Bugs with Version: 917
-- Total Bugs with Version and OPEN state: 210
-- Total Bugs with Version (but not exact version): 299
+- Total Open Bugs: 464
+- Total Closed Bugs: 1636
+- Total Bugs with Version: 884
+- Total Bugs with Version and OPEN state: 212
+- Total Bugs with Version (but not exact version): 303

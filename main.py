@@ -252,16 +252,17 @@ def create_report_md(showClosed=True, showOpen=True, filename='report.md'):
                 elif issue["state"] == 'CLOSED' and showClosed == False:
                     continue
 
-                if issue['fixed_in'] == None:
-                    issue['fixed_in'] = ''
+                # if issue['fixed_in'] == None:
+                #     issue['fixed_in'] = ''
                 if printed == 0:
                     report_file.write(f'## {version}\n')
                 if index == 0 or issue['state'] != sorted_issues[index-1]['state']:
                     if showClosed == True and showOpen == True:
                         report_file.write(f'### {issue["state"]}\n')
-                    if issue['fixed_in'] != '':
-                        report_file.write(f'- [{issue["title"]}]({issue["url"]}) (Fixed in {issue["fixed_in"]})\n')        
-                report_file.write(f'- [{issue["title"]}]({issue["url"]})\n')
+                if issue['fixed_in'] != None:
+                    report_file.write(f'- [{issue["title"]}]({issue["url"]}) (Fixed in {issue["fixed_in"]})\n')
+                else:
+                    report_file.write(f'- [{issue["title"]}]({issue["url"]})\n')
                 printed += 1
                 
             

@@ -189,12 +189,29 @@ def log_stats():
     with open('issues_by_version.json', 'r') as file:
         issues = json.load(file)
     
-    sorted_versions = sorted(issues.keys())
+    sorted_versions = sorted(
+        (version for version in issues.keys() if version != 'No Version'),
+        key=lambda s: list(map(int, s.split('.'))),
+        reverse=True
+    )
+    if 'No Version' in issues:
+        sorted_versions.append('No Version')
     
     with open('stats.txt', 'w') as stats_file:
+        stats_file.write(f'Grafana Bug Report\n')
+        current_date = datetime.now().strftime("%Y-%m-%d")
+        stats_file.write(f'Date: {current_date}\n\n')
+
+        stats_file.write(f'## By Version\n')
+        stats_file.write(f'Version, Total, Open, Closed\n')
         for version in sorted_versions:
-            stats_file.write(f'{version}: {len(issues[version])}\n')
+            # group the issues by state
+            open_issues = [issue for issue in issues[version] if issue['state'] == 'OPEN']
+            closed_issues = [issue for issue in issues[version] if issue['state'] == 'CLOSED']
+            stats_file.write(f'{version}, {len(issues[version])}, {len(open_issues)}, {len(closed_issues)}\n')
+
     
+        stats_file.write(f'\n\n## Overall Stats\n')
         # total issues
         with open('issues.json', 'r') as file:
             issues = json.load(file)

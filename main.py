@@ -232,7 +232,13 @@ def create_report_md(showClosed=True, showOpen=True, filename='report.md'):
     with open('issues_by_version.json', 'r') as file:
         issues = json.load(file)
     
-    sorted_versions = sorted(issues.keys())
+    sorted_versions = sorted(
+        (version for version in issues.keys() if version != 'No Version'),
+        key=lambda s: list(map(int, s.split('.'))),
+        reverse=True
+    )
+    if 'No Version' in issues:
+        sorted_versions.append('No Version')
     
     with open(f'reports/{filename}', 'w', encoding='utf-8') as report_file:
 
@@ -422,12 +428,17 @@ def get_milestone(issue_url):
     if response.json()['data']['repository']:
         # check for issue or pull request key
         
-        if 'issue' in response.json()['data']['repository']:
-            if response.json()['data']['repository']['issue']['milestone'] != None and 'title' in response.json()['data']['repository']['issue']['milestone']:
-                return response.json()['data']['repository']['issue']['milestone']['title']
-        else:
-            if response.json()['data']['repository']['pullRequest']['milestone'] != None and 'title' in response.json()['data']['repository']['pullRequest']['milestone']:
-                return response.json()['data']['repository']['pullRequest']['milestone']['title']
+        repository_data = response.json().get('data', {}).get('repository', {})
+        if 'issue' in repository_data:
+            milestone = repository_data.get('issue', {}).get('milestone', {})
+            if milestone and 'title' in milestone:
+                return milestone['title']
+        elif 'pullRequest' in repository_data:
+            pr = repository_data.get('pullRequest', {})
+            if pr and 'milestone' in pr:
+                milestone = pr.get('milestone', {})
+                if milestone and 'title' in milestone:
+                    return milestone['title']
             
             return None
 def find_fixed_in_version():

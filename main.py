@@ -203,12 +203,15 @@ def log_stats():
         stats_file.write(f'Date: {current_date}\n\n')
 
         stats_file.write(f'## By Version\n')
-        stats_file.write(f'Version, Total, Open, Closed\n')
-        for version in sorted_versions:
-            # group the issues by state
-            open_issues = [issue for issue in issues[version] if issue['state'] == 'OPEN']
-            closed_issues = [issue for issue in issues[version] if issue['state'] == 'CLOSED']
-            stats_file.write(f'{version}, {len(issues[version])}, {len(open_issues)}, {len(closed_issues)}\n')
+        with open('reports/stats_by_version.csv', 'w') as csv_file:
+            csv_file.write(f'Version, Total, Open, Closed\n')
+            stats_file.write(f'Version, Total, Open, Closed\n')
+            for version in sorted_versions:
+                # group the issues by state
+                open_issues = [issue for issue in issues[version] if issue['state'] == 'OPEN']
+                closed_issues = [issue for issue in issues[version] if issue['state'] == 'CLOSED']
+                stats_file.write(f'{version}, {len(issues[version])}, {len(open_issues)}, {len(closed_issues)}\n')
+                csv_file.write(f'{version}, {len(issues[version])}, {len(open_issues)}, {len(closed_issues)}\n')
 
     
         stats_file.write(f'\n\n## Overall Stats\n')

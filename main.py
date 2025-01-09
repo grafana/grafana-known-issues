@@ -642,6 +642,37 @@ def review_release_info():
                 else:   
                     csv_file.write(f'{releaseWithoutV}, 0, 0, 0, {commits}\n')
 
+    # lets have a v2 that just groups together all the major.minor versions
+    major_minor_versions = {}
+    for release in releases:
+        major_minor_version = release.lstrip('v').rsplit('.', 1)[0]
+        if major_minor_version not in major_minor_versions:
+            major_minor_versions[major_minor_version] = []
+        major_minor_versions[major_minor_version].append(release)
+    
+    with open('reports/major_minor_release_stats.csv', 'w') as csv_file:
+        csv_file.write(f'Version, Total, Open, Closed, Commits\n')
+        with open('reports/release_stats.csv', 'r') as detailed_csv:
+            detailed_csv.readline()
+            for line in detailed_csv:
+                version, total, open_issues, closed, commits = line.strip().split(',')
+                major_minor_version = version.rsplit('.', 1)[0]
+                if major_minor_version not in major_minor_versions:
+                    major_minor_versions[major_minor_version] = []
+                major_minor_versions[major_minor_version].append({
+                    'version': version,
+                    'total': int(total),
+                    'open': int(open_issues),
+                    'closed': int(closed),
+                    'commits': int(commits)
+                })
+        
+        for major_minor_version in major_minor_versions:
+            total = sum([release['total'] for release in major_minor_versions[major_minor_version] if isinstance(release, dict)])
+            open_issues_count = sum([release['open'] for release in major_minor_versions[major_minor_version] if isinstance(release, dict)])
+            closed = sum([release['closed'] for release in major_minor_versions[major_minor_version] if isinstance(release, dict)])
+            commits = sum([release['commits'] for release in major_minor_versions[major_minor_version] if isinstance(release, dict)])
+            csv_file.write(f'{major_minor_version}, {total}, {open_issues_count}, {closed}, {commits}\n')
         
 
 if __name__ == '__main__':

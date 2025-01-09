@@ -196,6 +196,28 @@ def log_stats():
     )
     if 'No Version' in issues:
         sorted_versions.append('No Version')
+
+    
+    # group together all major/minor versions, basically remove the patch version and group together, e.g. 11.4.1 and 11.4.2 become 11.4 and we group the issues together.
+    major_minor_versions = {}
+    for version in sorted_versions:
+        if version == 'No Version':
+            major_minor_version = 'No Version'
+        else:
+            major_minor_version = '.'.join(version.split('.')[:2])
+        
+        if major_minor_version not in major_minor_versions:
+            major_minor_versions[major_minor_version] = []
+        
+        major_minor_versions[major_minor_version] += issues[version]
+
+    with open('reports/stats_by_major_minor_version.csv', 'w') as csv_file:
+        csv_file.write(f'Version, Total, Open, Closed\n')
+        for version in major_minor_versions:
+            # group the issues by state
+            open_issues = [issue for issue in major_minor_versions[version] if issue['state'] == 'OPEN']
+            closed_issues = [issue for issue in major_minor_versions[version] if issue['state'] == 'CLOSED']
+            csv_file.write(f'{version}, {len(major_minor_versions[version])}, {len(open_issues)}, {len(closed_issues)}\n')  
     
     with open('stats.txt', 'w') as stats_file:
         stats_file.write(f'Grafana Bug Report\n')

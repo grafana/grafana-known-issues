@@ -1,5 +1,5 @@
 # Grafana Bug Report
-## Date: 2025-01-08
+## Date: 2025-01-09
 ## 11.5.0
 - [Dashboard: Scene dashboard does not return options for data source type variable](https://github.com/grafana/grafana/issues/98032)
 - [Explore Log: unexpected error occurs](https://github.com/grafana/grafana/issues/98473)

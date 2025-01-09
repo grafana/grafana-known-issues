@@ -1,5 +1,5 @@
 # Grafana Bug Report
-## Date: 2025-01-08
+## Date: 2025-01-09
 ## 11.14.0
 ### CLOSED
 - [Variable: Null value result in crash](https://github.com/grafana/grafana/issues/97203)

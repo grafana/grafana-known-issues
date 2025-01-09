@@ -510,6 +510,139 @@ def find_fixed_in_version():
                 issue['fixed_in'] = None
     return issues
 
+def fetch_a_list_of_tags_from_github():
+
+    # check if a tags file exists first, or if --no-cache is passed
+    if os.path.exists('tags.json') and '--no-cache' not in sys.argv:
+        with open('tags.json', 'r') as file:
+            return json.load(file)
+
+    # GitHub GraphQL API endpoint
+    github_api_url = 'https://api.github.com/graphql'
+
+    # Your GitHub personal access token
+    token = os.environ.get('GH_TOKEN')
+
+    # Your GitHub repository owner and name
+    owner = 'grafana'
+    repo_name = 'grafana'
+
+    # GraphQL query to fetch issues with label "type/bug"
+    query = '''
+    query {
+        repository(owner: "%s", name: "%s") {
+            refs(refPrefix: "refs/tags/", first: 100, orderBy: {field: TAG_COMMIT_DATE, direction: DESC}) {
+                nodes {
+                    name
+                }
+            }
+        }
+    }
+    ''' % (owner, repo_name)
+
+    # Set up headers with the GitHub token
+    headers = {
+        'Authorization': f'Bearer {token}',
+        'Content-Type': 'application/json',
+    }
+
+    # Make the GraphQL request
+    try:
+        response = requests.post(github_api_url, json={'query': query}, headers=headers)
+        response.raise_for_status()
+    except requests.exceptions.RequestException as e:
+        print(f"Error: {e}")
+        return
+
+    # Parse the response and extract relevant information
+    data = response.json()
+    try:
+        tags = data['data']['repository']['refs']['nodes']
+    except KeyError:
+        print("Error: Invalid response from GitHub API")
+        return []
+    
+    # remove any tag that doesn't match the pattern v\d+\.\d+\.\d+
+    tags = [tag for tag in tags if re.match(r'v\d+\.\d+\.\d+', tag['name'])]
+
+    # change this to just an array of names
+    tags = [tag['name'] for tag in tags]
+
+    # save the tags file to tags.json
+    with open('tags.json', 'w') as file:
+        json.dump(tags, file, indent=4)
+    
+    return tags
+
+def get_prior_release(release_version, known_release_versions):
+    # this function takes in a release version, e.g. v11.4.1 and returns the prior release version, e.g. v11.4.0. For the first release in a major/minor version, it returns the last patch of the previous major/minor.
+    version_parts = release_version.lstrip('v').split('.')
+    major = int(version_parts[0])
+    minor = int(version_parts[1])
+    # there might be a +security patch, or -preview, so lets just strip that off
+    patch = int(version_parts[2].split('+')[0].split('-')[0])
+    
+    if patch > 0:
+        prior_release = f'v{major}.{minor}.{patch-1}'
+    else:
+        if minor > 0:
+            prior_minor_version = f'v{major}.{minor-1}'
+            prior_release = max([v for v in known_release_versions if v.startswith(prior_minor_version)], default=None)
+        else:
+            prior_major_version = f'v{major-1}.'
+            prior_release = max([v for v in known_release_versions if v.startswith(prior_major_version)], default=None)
+    
+    if prior_release not in known_release_versions:
+        prior_release = None
+    
+    return prior_release
+    
+def get_number_of_commits_between_two_releases(release_version, prior_release_version):
+    # this function takes in two release versions and returns the number of commits between the two releases
+    # HACK, just going to use my local checkout of grafana/grafana
+    # get the number of commits between the two releases
+    # git log --oneline v7.5.0...v7.5.1 | wc -l
+
+    # get directory i'm in now
+    current_dir = os.getcwd()
+    # change to ~/git/grafana
+    os.chdir('/Users/timlevett/git/grafana')
+    # get the number of commits between the two releases
+    commits = os.popen(f'git log --oneline {prior_release_version}...{release_version} | wc -l').read()
+    # change back to the original directory
+    os.chdir(current_dir)
+    return int(commits)
+
+def review_release_info():
+    releases = fetch_a_list_of_tags_from_github()
+
+    # sort releases by major.minor.patch
+    releases = sorted(releases,key=lambda s: list(map(int, s.lstrip('v').split('.'))),reverse=True)
+
+    with open('reports/release_stats.csv', 'w') as csv_file:
+        csv_file.write(f'Version, Total, Open, Closed, Commits\n')
+        for release in releases:
+            # get the prior version
+            prior_release = get_prior_release(release, releases)
+            if prior_release == None:
+                commits = 0
+            else:
+                # fetch how many commits between the two releases
+                commits = get_number_of_commits_between_two_releases(release, prior_release)
+            # get issues from issues.json
+            with open('issues_by_version.json', 'r') as file:
+                issues = json.load(file)
+                # find this release by looking through the keys for the version
+                releaseWithoutV = release.lstrip('v')
+                if releaseWithoutV in issues:
+                    # group the issues by state
+                    open_issues = [issue for issue in issues[releaseWithoutV] if issue['state'] == 'OPEN']
+                    closed_issues = [issue for issue in issues[releaseWithoutV] if issue['state'] == 'CLOSED']
+                    csv_file.write(f'{releaseWithoutV}, {len(issues[releaseWithoutV])}, {len(open_issues)}, {len(closed_issues)}, {commits}\n')
+                else:   
+                    csv_file.write(f'{releaseWithoutV}, 0, 0, 0, {commits}\n')
+
+        
 
 if __name__ == '__main__':
     if len(sys.argv) > 1 and sys.argv[1] == '--no-cache':
@@ -522,3 +655,6 @@ if __name__ == '__main__':
     create_report_md(False, True, "open_report.md")
     create_report_md(True, False, "closed_report.md")
     create_report_md(True, True, "all_report.md")
+
+    review_release_info()
+    

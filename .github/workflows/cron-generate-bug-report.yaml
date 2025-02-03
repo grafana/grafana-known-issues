@@ -1,0 +1,72 @@
+name: Generate Newsletter
+
+permissions:
+  pull-requests: write
+  contents: write
+  actions: write
+
+on:
+  schedule:
+    - cron: "0 15 * * 3" # every Wednesday at 3PM UTC
+  workflow_dispatch:
+    inputs:
+        auto-merge:
+            type: boolean
+            description: Whether to auto-merge the generated report
+            default: true
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4 # checkout current repo
+      with:
+        fetch-depth: 0
+    - uses: actions/setup-python@v5 # setup python
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+    
+    - name: Generate app token # generate app token for https://github.com/organizations/grafana/settings/apps/engineering-bubble-up-report
+      id: generate-token
+      uses: actions/create-github-app-token@v1
+      with:
+        owner: grafana
+        app-id: ${{ secrets.GH_REPORT_GITHUB_APP_ID }}
+        private-key: ${{ secrets.GH_REPORT_GITHUB_APP_PRIVATE_KEY_PEM }}
+
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+      
+    - name: Generate report
+      run: python main.py --no-cache
+      env:
+        GH_TOKEN: ${{ steps.generate-token.outputs.token }}
+
+    - name: Get calendar week
+      id: cw-week
+      run: echo "calendar_week=$(date +%V)" >> "$GITHUB_OUTPUT"
+    
+    - name: Get Calendar Year
+      id: cw-year
+      run: echo "calendar_year=$(date +%Y)" >> "$GITHUB_OUTPUT"
+    
+    - name: Create pull request # create pull request
+      if: ${{ !env.ACT }} # don't execute if run locally with https://github.com/nektos/act
+      id: create-pull-request
+      uses: peter-evans/create-pull-request@v6
+      with:
+        commit-message: |
+          Bug Report for cw ${{ steps.cw-week.outputs.calendar_week }} / ${{ steps.cw-year.outputs.calendar_year }}
+
+        title: Report for calendar week ${{ steps.cw-week.outputs.calendar_week }} / ${{ steps.cw-year.outputs.calendar_year }}
+        body: Generate report          
+        branch: generated-grafana-bug-report-${{steps.cw-week.outputs.calendar_week}}-${{steps.cw-year.outputs.calendar_year}}
+
+    - name: Merge pull request # merge pull request
+      if: ${{ !env.ACT && github.event.inputs.auto-merge == 'true'  }} # only run if auto-merge is enabled
+      env:
+        GH_TOKEN: ${{ steps.generate-token.outputs.token }}
+      id: merge-pr
+      run: |
+        gh pr merge --rebase ${{ steps.create-pull-request.outputs.pull-request-number }}

@@ -598,20 +598,21 @@ def get_prior_release(release_version, known_release_versions):
     return prior_release
     
 def get_number_of_commits_between_two_releases(release_version, prior_release_version):
+    return int(0)
     # this function takes in two release versions and returns the number of commits between the two releases
     # HACK, just going to use my local checkout of grafana/grafana
     # get the number of commits between the two releases
     # git log --oneline v7.5.0...v7.5.1 | wc -l
 
     # get directory i'm in now
-    current_dir = os.getcwd()
-    # change to ~/git/grafana
-    os.chdir('/Users/timlevett/git/grafana')
-    # get the number of commits between the two releases
-    commits = os.popen(f'git log --oneline {prior_release_version}...{release_version} | wc -l').read()
-    # change back to the original directory
-    os.chdir(current_dir)
-    return int(commits)
+    # current_dir = os.getcwd()
+    # # change to ~/git/grafana
+    # os.chdir('/Users/timlevett/git/grafana')
+    # # get the number of commits between the two releases
+    # commits = os.popen(f'git log --oneline {prior_release_version}...{release_version} | wc -l').read()
+    # # change back to the original directory
+    # os.chdir(current_dir)
+    # return int(commits)
 
 def review_release_info():
     releases = fetch_a_list_of_tags_from_github()

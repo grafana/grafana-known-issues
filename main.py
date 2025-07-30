@@ -599,28 +599,77 @@ def parse_version_for_sorting(version_string):
     
     return (major, minor, patch)
 
+def normalize_version_for_comparison(version_string):
+    """
+    Normalize a version string by removing 'v' prefix and any security/preview suffixes.
+    Returns the base version (e.g., '11.4.2' from 'v11.4.2+security-01')
+    """
+    # Remove 'v' prefix
+    version = version_string.lstrip('v')
+    
+    # Split by dots
+    parts = version.split('.')
+    
+    if len(parts) < 3:
+        # Handle incomplete versions by padding with zeros
+        parts.extend(['0'] * (3 - len(parts)))
+    
+    # Extract numeric part before any special characters for patch
+    patch_part = parts[2]
+    patch = patch_part.split('+')[0].split('-')[0]
+    
+    return f"{parts[0]}.{parts[1]}.{patch}"
+
 def get_prior_release(release_version, known_release_versions):
-    # this function takes in a release version, e.g. v11.4.1 and returns the prior release version, e.g. v11.4.0. For the first release in a major/minor version, it returns the last patch of the previous major/minor.
-    version_parts = release_version.lstrip('v').split('.')
+    """
+    Get the prior release version, handling security patches and special versions.
+    Returns the prior release version or None if not found.
+    """
+    # Normalize the current release version
+    current_normalized = normalize_version_for_comparison(release_version)
+    
+    # Parse the normalized version
+    version_parts = current_normalized.split('.')
     major = int(version_parts[0])
     minor = int(version_parts[1])
-    # there might be a +security patch, or -preview, so lets just strip that off
-    patch = int(version_parts[2].split('+')[0].split('-')[0])
+    patch = int(version_parts[2])
     
+    # Calculate the expected prior release
     if patch > 0:
-        prior_release = f'v{major}.{minor}.{patch-1}'
+        # Same major.minor, previous patch
+        expected_prior = f"{major}.{minor}.{patch-1}"
     else:
         if minor > 0:
-            prior_minor_version = f'v{major}.{minor-1}'
-            prior_release = max([v for v in known_release_versions if v.startswith(prior_minor_version)], default=None)
+            # Previous minor version, find the highest patch
+            expected_prior = f"{major}.{minor-1}."
         else:
-            prior_major_version = f'v{major-1}.'
-            prior_release = max([v for v in known_release_versions if v.startswith(prior_major_version)], default=None)
+            # Previous major version, find the highest minor.patch
+            expected_prior = f"{major-1}."
     
-    if prior_release not in known_release_versions:
-        prior_release = None
+    # Find the best matching prior release
+    best_match = None
+    best_match_normalized = None
     
-    return prior_release
+    for version in known_release_versions:
+        if version == release_version:
+            continue  # Skip the current version
+            
+        normalized = normalize_version_for_comparison(version)
+        
+        # Check if this version could be a prior release
+        if patch > 0:
+            # Looking for same major.minor, previous patch
+            if normalized == expected_prior:
+                best_match = version
+                break
+        else:
+            # Looking for previous major.minor version
+            if normalized.startswith(expected_prior):
+                if best_match is None or parse_version_for_sorting(version) > parse_version_for_sorting(best_match):
+                    best_match = version
+                    best_match_normalized = normalized
+    
+    return best_match
     
 def get_number_of_commits_between_two_releases(release_version, prior_release_version):
     """

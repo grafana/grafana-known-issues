@@ -623,21 +623,52 @@ def get_prior_release(release_version, known_release_versions):
     return prior_release
     
 def get_number_of_commits_between_two_releases(release_version, prior_release_version):
-    return int(0)
-    # this function takes in two release versions and returns the number of commits between the two releases
-    # HACK, just going to use my local checkout of grafana/grafana
-    # get the number of commits between the two releases
-    # git log --oneline v7.5.0...v7.5.1 | wc -l
-
-    # get directory i'm in now
-    # current_dir = os.getcwd()
-    # # change to ~/git/grafana
-    # os.chdir('/Users/timlevett/git/grafana')
-    # # get the number of commits between the two releases
-    # commits = os.popen(f'git log --oneline {prior_release_version}...{release_version} | wc -l').read()
-    # # change back to the original directory
-    # os.chdir(current_dir)
-    # return int(commits)
+    """
+    Get the number of commits between two releases using GitHub REST API.
+    Returns the number of commits between prior_release_version and release_version.
+    """
+    if not prior_release_version:
+        return 0
+    
+    # GitHub REST API endpoint for comparing commits
+    github_api_url = f'https://api.github.com/repos/grafana/grafana/compare/{prior_release_version}...{release_version}'
+    
+    # Your GitHub personal access token
+    token = os.environ.get('GH_TOKEN')
+    
+    if not token:
+        print("Warning: GH_TOKEN not set, returning 0 for commit count")
+        return 0
+    
+    # Set up headers with the GitHub token
+    headers = {
+        'Authorization': f'Bearer {token}',
+        'Accept': 'application/vnd.github.v3+json',
+    }
+    
+    # Make the REST API request
+    try:
+        response = requests.get(github_api_url, headers=headers)
+        response.raise_for_status()
+        
+        # Print rate limit info
+        print(f'Rate Limit: {response.headers["X-RateLimit-Remaining"]}/{response.headers["X-RateLimit-Limit"]}')
+        
+        data = response.json()
+        
+        # The REST API returns 'ahead_by' field with the number of commits
+        if 'ahead_by' in data:
+            return data['ahead_by']
+        else:
+            print(f"Warning: Could not get comparison data for {prior_release_version}..{release_version}")
+            return 0
+            
+    except requests.exceptions.RequestException as e:
+        print(f"Error getting commit count between {prior_release_version} and {release_version}: {e}")
+        return 0
+    except KeyError as e:
+        print(f"Error parsing response for {prior_release_version}..{release_version}: {e}")
+        return 0
 
 def review_release_info():
     releases = fetch_a_list_of_tags_from_github()
@@ -651,9 +682,11 @@ def review_release_info():
             # get the prior version
             prior_release = get_prior_release(release, releases)
             if prior_release == None:
+                print(f'No prior release found for {release}')
                 commits = 0
             else:
                 # fetch how many commits between the two releases
+                print(f'Getting commits between {release} and {prior_release}')
                 commits = get_number_of_commits_between_two_releases(release, prior_release)
             # get issues from issues.json
             with open('issues_by_version.json', 'r') as file:

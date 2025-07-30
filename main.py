@@ -191,7 +191,7 @@ def log_stats():
     
     sorted_versions = sorted(
         (version for version in issues.keys() if version != 'No Version'),
-        key=lambda s: list(map(int, s.split('.'))),
+        key=parse_version_for_sorting,
         reverse=True
     )
     if 'No Version' in issues:
@@ -276,7 +276,7 @@ def create_report_md(showClosed=True, showOpen=True, filename='report.md'):
     
     sorted_versions = sorted(
         (version for version in issues.keys() if version != 'No Version'),
-        key=lambda s: list(map(int, s.split('.'))),
+        key=parse_version_for_sorting,
         reverse=True
     )
     if 'No Version' in issues:
@@ -574,6 +574,31 @@ def fetch_a_list_of_tags_from_github():
     
     return tags
 
+def parse_version_for_sorting(version_string):
+    """
+    Parse a version string (e.g., 'v11.4.2+security-01' or '11.4.2') and return a tuple for sorting.
+    Handles special formats like +security, -preview, etc.
+    """
+    # Remove 'v' prefix if present
+    version = version_string.lstrip('v')
+    
+    # Split by dots
+    parts = version.split('.')
+    
+    if len(parts) < 3:
+        # Handle incomplete versions by padding with zeros
+        parts.extend(['0'] * (3 - len(parts)))
+    
+    major = int(parts[0])
+    minor = int(parts[1])
+    
+    # Handle patch version with special characters
+    patch_part = parts[2]
+    # Extract numeric part before any special characters
+    patch = int(patch_part.split('+')[0].split('-')[0])
+    
+    return (major, minor, patch)
+
 def get_prior_release(release_version, known_release_versions):
     # this function takes in a release version, e.g. v11.4.1 and returns the prior release version, e.g. v11.4.0. For the first release in a major/minor version, it returns the last patch of the previous major/minor.
     version_parts = release_version.lstrip('v').split('.')
@@ -617,8 +642,8 @@ def get_number_of_commits_between_two_releases(release_version, prior_release_ve
 def review_release_info():
     releases = fetch_a_list_of_tags_from_github()
 
-    # sort releases by major.minor.patch
-    releases = sorted(releases,key=lambda s: list(map(int, s.lstrip('v').split('.'))),reverse=True)
+    # sort releases by major.minor.patch using robust parsing
+    releases = sorted(releases, key=parse_version_for_sorting, reverse=True)
 
     with open('reports/release_stats.csv', 'w') as csv_file:
         csv_file.write(f'Version, Total, Open, Closed, Commits\n')

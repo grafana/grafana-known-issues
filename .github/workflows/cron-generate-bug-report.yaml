@@ -29,7 +29,7 @@ jobs:
     
     - name: Generate app token # generate app token for https://github.com/organizations/grafana/settings/apps/engineering-bubble-up-report
       id: generate-token
-      uses: actions/create-github-app-token@v1
+      uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349 # v2
       with:
         owner: grafana
         app-id: ${{ secrets.GH_REPORT_GITHUB_APP_ID }}

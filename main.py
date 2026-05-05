@@ -2,6 +2,7 @@ import requests
 import os
 import json
 import re
+import subprocess
 import sys
 import json
 from datetime import datetime
@@ -18,6 +19,18 @@ def fetch_github_issues(currentPage, pagesToGet, startswith):
     # Generate one from: https://github.com/settings/tokens
 
     token = os.environ.get('GH_TOKEN')
+
+    if not token:
+        # try execing to get gh auth token from command line
+        try:
+            result = subprocess.run(['gh', 'auth', 'token'], capture_output=True, text=True, check=True)
+            token = result.stdout.strip()
+        except (subprocess.CalledProcessError, FileNotFoundError):
+            pass
+
+        if not token:
+            print("Error: GitHub personal access token not provided.")
+            sys.exit(1)
 
     # Your GitHub repository owner and name
     owner = 'grafana'
@@ -365,14 +378,23 @@ def update_issues_json_with_new_issues(issues):
     # write to issues.json
     with open('issues.json', 'w') as file:
         json.dump(merged_issues, file, indent=4)
+def get_gh_token():
+    token = os.environ.get('GH_TOKEN')
+    if not token:
+        try:
+            result = subprocess.run(['gh', 'auth', 'token'], capture_output=True, text=True, check=True)
+            token = result.stdout.strip()
+        except (subprocess.CalledProcessError, FileNotFoundError):
+            pass
+    return token
+
 def get_linked_issue(issue_url):
     # get ID from issue URL
     issue_id = issue_url.split('/')[-1]
     # GitHub GraphQL API endpoint
     github_api_url = 'https://api.github.com/graphql'
 
-    # Your GitHub personal access token
-    token = os.environ.get('GH_TOKEN')
+    token = get_gh_token()
 
     # get the timeline items of the issue
     query = '''
@@ -425,8 +447,7 @@ def get_milestone(issue_url):
     # GitHub GraphQL API endpoint
     github_api_url = 'https://api.github.com/graphql'
 
-    # Your GitHub personal access token
-    token = os.environ.get('GH_TOKEN')
+    token = get_gh_token()
 
     if 'pull' in issue_url:
         # get the timeline items of the issue
@@ -523,8 +544,7 @@ def fetch_a_list_of_tags_from_github():
     # GitHub GraphQL API endpoint
     github_api_url = 'https://api.github.com/graphql'
 
-    # Your GitHub personal access token
-    token = os.environ.get('GH_TOKEN')
+    token = get_gh_token()
 
     # Your GitHub repository owner and name
     owner = 'grafana'
@@ -685,9 +705,8 @@ def get_number_of_commits_between_two_releases(release_version, prior_release_ve
     # GitHub REST API endpoint for comparing commits
     github_api_url = f'https://api.github.com/repos/grafana/grafana/compare/{prior_release_version}...{release_version}'
     
-    # Your GitHub personal access token
-    token = os.environ.get('GH_TOKEN')
-    
+    token = get_gh_token()
+
     if not token:
         print("Warning: GH_TOKEN not set, returning 0 for commit count")
         return 0

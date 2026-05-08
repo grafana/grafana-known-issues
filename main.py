@@ -15,22 +15,10 @@ def fetch_github_issues(currentPage, pagesToGet, startswith):
     # GitHub GraphQL API endpoint
     github_api_url = 'https://api.github.com/graphql'
 
-    # Your GitHub personal access token
-    # Generate one from: https://github.com/settings/tokens
-
-    token = os.environ.get('GH_TOKEN')
-
+    token = get_gh_token()
     if not token:
-        # try execing to get gh auth token from command line
-        try:
-            result = subprocess.run(['gh', 'auth', 'token'], capture_output=True, text=True, check=True)
-            token = result.stdout.strip()
-        except (subprocess.CalledProcessError, FileNotFoundError):
-            pass
-
-        if not token:
-            print("Error: GitHub personal access token not provided.")
-            sys.exit(1)
+        print("Error: GitHub personal access token not provided.")
+        sys.exit(1)
 
     # Your GitHub repository owner and name
     owner = 'grafana'

@@ -19,19 +19,25 @@ jobs:
   generate:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4 # checkout current repo
+    - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7 # checkout current repo
       with:
         fetch-depth: 0
-    - uses: actions/setup-python@v5 # setup python
+    - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6 # setup python
       with:
         python-version: '3.11'
         cache: 'pip'
     
     - name: Generate app token # generate app token for https://github.com/organizations/grafana/settings/apps/engineering-bubble-up-report
       id: generate-token
-      uses: actions/create-github-app-token@v1
+      uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3
       with:
         owner: grafana
+        repositories: |
+          grafana
+          grafana-known-issues
+        permission-contents: write
+        permission-issues: read
+        permission-pull-requests: write
         app-id: ${{ secrets.GH_REPORT_GITHUB_APP_ID }}
         private-key: ${{ secrets.GH_REPORT_GITHUB_APP_PRIVATE_KEY_PEM }}
 
@@ -54,7 +60,7 @@ jobs:
     - name: Create pull request # create pull request
       if: ${{ !env.ACT }} # don't execute if run locally with https://github.com/nektos/act
       id: create-pull-request
-      uses: peter-evans/create-pull-request@c5a7806660adbe173f04e3e038b0ccdcd758773c # v6
+      uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8
       with:
         commit-message: |
           Bug Report for cw ${{ steps.cw-week.outputs.calendar_week }} / ${{ steps.cw-year.outputs.calendar_year }}

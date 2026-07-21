@@ -1,5 +1,5 @@
 Grafana Bug Report
-Date: 2026-07-13
+Date: 2026-07-21
 
 ## By Version
 Version, Total, Open, Closed

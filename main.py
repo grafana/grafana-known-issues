@@ -218,8 +218,29 @@ def log_stats():
             # group the issues by state
             open_issues = [issue for issue in major_minor_versions[version] if issue['state'] == 'OPEN']
             closed_issues = [issue for issue in major_minor_versions[version] if issue['state'] == 'CLOSED']
-            csv_file.write(f'{version}, {len(major_minor_versions[version])}, {len(open_issues)}, {len(closed_issues)}\n')  
-    
+            csv_file.write(f'{version}, {len(major_minor_versions[version])}, {len(open_issues)}, {len(closed_issues)}\n')
+
+    # group together all major versions, e.g. 11.4.1 and 11.3.2 become 11 and we group the issues together.
+    major_versions = {}
+    for version in sorted_versions:
+        if version == 'No Version':
+            major_version = 'No Version'
+        else:
+            major_version = version.split('.')[0]
+
+        if major_version not in major_versions:
+            major_versions[major_version] = []
+
+        major_versions[major_version] += issues[version]
+
+    with open('reports/stats_by_major_version.csv', 'w') as csv_file:
+        csv_file.write(f'Version, Total, Open, Closed\n')
+        for version in major_versions:
+            # group the issues by state
+            open_issues = [issue for issue in major_versions[version] if issue['state'] == 'OPEN']
+            closed_issues = [issue for issue in major_versions[version] if issue['state'] == 'CLOSED']
+            csv_file.write(f'{version}, {len(major_versions[version])}, {len(open_issues)}, {len(closed_issues)}\n')
+
     with open('stats.txt', 'w') as stats_file:
         stats_file.write(f'Grafana Bug Report\n')
         current_date = datetime.now().strftime("%Y-%m-%d")

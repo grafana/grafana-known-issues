@@ -1,5 +1,5 @@
 # Grafana Bug Report
-## Date: 2026-07-13
+## Date: 2026-07-21
 ## 13.1.0
 ### OPEN
 - [404/blank page when clicking "Add new data source" from Connections page for TestData plugin](https://github.com/grafana/grafana/issues/123100)

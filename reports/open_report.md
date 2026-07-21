@@ -1,5 +1,5 @@
 # Grafana Bug Report
-## Date: 2026-07-13
+## Date: 2026-07-21
 ## 13.1.0
 - [404/blank page when clicking "Add new data source" from Connections page for TestData plugin](https://github.com/grafana/grafana/issues/123100)
 - [Alerting: Regression because textarea was changed to input which destroys meaningful whitespace](https://github.com/grafana/grafana/issues/127643)

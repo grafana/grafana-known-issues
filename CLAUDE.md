@@ -46,6 +46,7 @@ All logic is in `main.py`. The pipeline runs sequentially:
 | `reports/all_report.md` | All bugs by version |
 | `reports/stats_by_version.csv` | Per-patch-version counts |
 | `reports/stats_by_major_minor_version.csv` | Per major.minor counts |
+| `reports/stats_by_major_version.csv` | Per major counts |
 | `reports/release_stats.csv` | Per-release counts + commit delta |
 | `reports/major_minor_release_stats.csv` | Per major.minor release counts + commits |
 | `stats.txt` | Summary stats (also printed to stdout) |

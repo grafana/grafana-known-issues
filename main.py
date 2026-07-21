@@ -445,8 +445,14 @@ def get_linked_issue(issue_url):
         print(f"Error: {e}")
         return
     print(f'Rate Limit: {response.headers["X-RateLimit-Remaining"]}/{response.headers["X-RateLimit-Limit"]}')
-    if response.json()['data']['repository']['issue']['timelineItems']['nodes']:
-        return response.json()['data']['repository']['issue']['timelineItems']['nodes'][0]['subject']['url']
+    payload = response.json()
+    if payload.get('errors'):
+        print(f"GraphQL errors for {issue_url}: {payload['errors']}")
+    repository = (payload.get('data') or {}).get('repository') or {}
+    issue = repository.get('issue') or {}
+    nodes = (issue.get('timelineItems') or {}).get('nodes')
+    if nodes:
+        return nodes[0]['subject']['url']
     else:
         return None
 
@@ -500,22 +506,14 @@ def get_milestone(issue_url):
         print(f"Error: {e}")
         return
     
-    if response.json()['data']['repository']:
-        # check for issue or pull request key
-        
-        repository_data = response.json().get('data', {}).get('repository', {})
-        if 'issue' in repository_data:
-            milestone = repository_data.get('issue', {}).get('milestone', {})
-            if milestone and 'title' in milestone:
-                return milestone['title']
-        elif 'pullRequest' in repository_data:
-            pr = repository_data.get('pullRequest', {})
-            if pr and 'milestone' in pr:
-                milestone = pr.get('milestone', {})
-                if milestone and 'title' in milestone:
-                    return milestone['title']
-            
-            return None
+    payload = response.json()
+    if payload.get('errors'):
+        print(f"GraphQL errors for {issue_url}: {payload['errors']}")
+    repository = (payload.get('data') or {}).get('repository') or {}
+    # check for issue or pull request key
+    node = repository.get('issue') or repository.get('pullRequest') or {}
+    milestone = node.get('milestone') or {}
+    return milestone.get('title')
 def find_fixed_in_version():
     # gets all issues from issues.json
     with open('issues.json', 'r') as file:

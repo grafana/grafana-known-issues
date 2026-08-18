@@ -60,3 +60,4 @@ To test the workflow locally, use [act](https://github.com/nektos/act) — the w
 ## Caching
 
 `fetch_a_list_of_tags_from_github` caches results to `tags.json`. Pass `--no-cache` to bypass all caches and re-fetch from GitHub. Without `--no-cache`, `main.py` skips GitHub API calls and regenerates reports from existing JSON files.
+- Security issues should be reported via [Grafana's security issue reporting page](https://grafana.com/legal/report-a-security-issue/) and not directly in this repository.
